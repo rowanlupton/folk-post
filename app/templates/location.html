@@ -1,7 +1,7 @@
 {% extends 'basic.html' %}
 
 {% block content %}
-	<p>item: {{result['item']}}</p>
+	{#<p>item: {{result['item']}}</p>
 	<p>description: {{result['description']}}</p>
 	<p>person who has it: {{result['name']}}</p>
 	<p>where it is: {{result['location']}}</p>
@@ -9,6 +9,8 @@
 
 	<p><a href="{{request.path}}/claim">claim this item</a></p>
 	<p><a href="{{request.path}}/update-location">update this item's location</a></p>
-	<p><a href="{{request.path}}/delete">delete this item</a></p>
+	<p><a href="{{request.path}}/delete">delete this item</a></p> #}
+
+	under construction
 
 {% endblock %}

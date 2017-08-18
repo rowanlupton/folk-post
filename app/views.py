@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, BooleanField, TextAreaField
+from wtforms import StringField, BooleanField, TextAreaField, SubmitField
 from wtforms.validators import DataRequired
 
 
@@ -16,3 +16,6 @@ class submitItemClaim(FlaskForm):
 class submitItemLocationUpdate(FlaskForm):
 	location = StringField('location', validators=[DataRequired()])
 	name = StringField('name', validators=[DataRequired()])
+
+class confirmDeleteItem(FlaskForm):
+	yes = SubmitField(label="yes")

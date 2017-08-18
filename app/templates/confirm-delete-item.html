@@ -1,0 +1,15 @@
+{% extends 'basic.html' %}
+
+{% block title %}{{super()}}confirm deletion{% endblock title %}
+
+
+{% block content%}
+	<p>Are you sure you want to delete this?</p>
+	<p>
+		<form method="post" name="api">
+			{{form.csrf_token}}
+			{{ form.yes }}
+			<a href="/"><input type="button" value="no" class="btn btn-sm btn-primary" ></a>
+		</form>
+	</p>
+{%endblock content%}

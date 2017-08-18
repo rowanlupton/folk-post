@@ -1,7 +1,7 @@
 from firebase import firebase
 from flask import Flask, render_template, request, session
 from flask import current_app as current_app
-from app.views import submitItem, submitItemClaim, submitItemLocationUpdate
+from app.views import submitItem, submitItemClaim, submitItemLocationUpdate, confirmDeleteItem
 from flask_wtf.csrf import CSRFProtect
 
 app = Flask(__name__, template_folder='app/templates')
@@ -9,10 +9,13 @@ app.config.from_object('config')
 firebase = firebase.FirebaseApplication('https://folk-post.firebaseio.com', None)
 from app import views
 
+
+
 @app.route('/')
 def index():
 	results = firebase.get('/items', None)
 	return render_template('index.html', results=results)
+
 
 @app.route('/submission', methods=['GET', 'POST'])
 def itemSubmission():
@@ -23,11 +26,23 @@ def itemSubmission():
 		return render_template('api-put-result.html', form=form, putData=putData)
 	return render_template('submit-item.html', form=form)
 
+
+@app.route('/user/<name>')
+def viewUser(name):
+	return render_template('user.html')
+
+
+@app.route('/location/<location>')
+def viewLocation(location):
+	return render_template('location.html')
+
+
 @app.route('/<name>/<item>')
 def viewItem(name, item):
 	result = firebase.get('/items', name)
 	result = result[item]
 	return render_template('fetch-item-result.html', result=result)
+
 
 @app.route('/<name>/<item>/claim', methods=['GET', 'POST'])
 def claimItem(name, item):
@@ -35,15 +50,15 @@ def claimItem(name, item):
 	if form.validate_on_submit():
 		putData = {'owner' : form.owner.data}
 		firebase.patch('/items/'+name+'/'+item, putData)
-		return "ok"
+		return render_template('generic-success.html')
 	return render_template('claim-item.html', form=form)
+
 
 def moveItem(name, item, newName):
 	result = firebase.get('/items', name)
 	result = result[item]
 	firebase.put('/items', newName + '/' + item, result)
 	firebase.delete('/items', name + '/' +item)
-
 
 @app.route('/<name>/<item>/update-location', methods=['GET', 'POST'])
 def updateItemLocation(name, item):
@@ -52,5 +67,15 @@ def updateItemLocation(name, item):
 		putData = {'location' : form.location.data, 'name' : form.name.data}
 		firebase.patch('/items/'+name+'/'+item, putData)
 		moveItem(name, item, putData['name'])
-		return "ok"
+		return render_template('generic-success.html')
 	return render_template('update-location.html', form=form)
+
+
+@app.route('/<name>/<item>/delete', methods=['GET', 'POST'])
+def deleteItem(name, item):
+	form = confirmDeleteItem()
+	if form.validate_on_submit():
+		firebase.delete('/items', name + '/' +item)
+		return render_template('generic-success.html')
+	return render_template('confirm-delete-item.html', form=form)
+

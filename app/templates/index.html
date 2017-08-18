@@ -3,7 +3,7 @@
 {% block title %}index{% endblock title%}
 
 {% block content %}
-	<a href="/submission">new submission</a>
+	<h3><a href="/submission">new submission</a></h3>
 
 	{% for user in results.items() %}
 		{% for entry in user[1].items() %}

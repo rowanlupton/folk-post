@@ -5,4 +5,9 @@
 	<p>description: {{result['description']}}</p>
 	<p>person who has it: {{result['name']}}</p>
 	<p>where it is: {{result['location']}}</p>
+	<p>who does it belong to: {% if result['owner'] is defined %}{{result['owner']}}{% else %}unclaimed{% endif %}</p>
+
+	<p><a href="{{request.path}}/claim">claim this item</a></p>
+	<p><a href="{{request.path}}/update-location">update this item's location</a></p>
+
 {% endblock %}

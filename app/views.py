@@ -9,3 +9,10 @@ class submitItem(FlaskForm):
 	description = TextAreaField('description', validators=[DataRequired()])
 	name = StringField('name', validators=[DataRequired()])
 	location = StringField('location', validators=[DataRequired()])
+
+class submitItemClaim(FlaskForm):
+	owner = StringField('owner', validators=[DataRequired()])
+
+class submitItemLocationUpdate(FlaskForm):
+	location = StringField('location', validators=[DataRequired()])
+	name = StringField('name', validators=[DataRequired()])

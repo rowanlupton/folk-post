@@ -1,7 +1,7 @@
 from firebase import firebase
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, flash
 from flask import current_app as current_app
-from app.views import submitItem, submitItemClaim, submitItemLocationUpdate, confirmDeleteItem
+from app.views import userLogin, userRegister, submitItem, submitItemClaim, submitItemLocationUpdate, confirmDeleteItem
 from flask_wtf.csrf import CSRFProtect
 
 app = Flask(__name__, template_folder='app/templates')
@@ -17,12 +17,35 @@ def index():
 	return render_template('index.html', results=results)
 
 
+@app.route('/login', methods=['GET', 'POST'])
+def do_login():
+	form = userLogin()
+	if form.validate_on_submit():
+		if firebase.get('/users', form.username.data + '/password') == form.password.data:
+			session['logged_in'] = True
+			return index()
+		else:
+			flash('wrong password')
+
+	return render_template('login-page.html', form=form)
+
+@app.route('/register', methods=['GET', 'POST'])
+def do_register():
+	form = userRegister()
+	if form.validate_on_submit():
+		if form.password.data == form.passwordConfirm.data:
+			putData = {'password' : form.password.data}
+			firebase.put('/users', form.username.data, putData)
+			return render_template('generic-success.html')
+	return render_template('register-page.html', form=form)
+
+
 @app.route('/submission', methods=['GET', 'POST'])
 def itemSubmission():
 	form = submitItem()
 	if form.validate_on_submit():
-		putData = {'item' : form.item.data, 'description' : form.description.data, 'name' : form.name.data, 'location' : form.location.data}
-		firebase.put('/items', putData['name'] + '/' + putData['item'], putData)
+		putData = {'item' : form.item.data, 'description' : form.description.data, 'possessor' : form.possessor.data, 'location' : form.location.data}
+		firebase.put('/items', putData['possessor'] + '/' + putData['item'], putData)
 		return render_template('api-put-result.html', form=form, putData=putData)
 	return render_template('submit-item.html', form=form)
 
@@ -54,19 +77,19 @@ def claimItem(name, item):
 	return render_template('claim-item.html', form=form)
 
 
-def moveItem(name, item, newName):
-	result = firebase.get('/items', name)
+def moveItem(possessor, item, newName):
+	result = firebase.get('/items', possessor)
 	result = result[item]
+	firebase.delete('/items', possessor + '/' +item)
 	firebase.put('/items', newName + '/' + item, result)
-	firebase.delete('/items', name + '/' +item)
 
-@app.route('/<name>/<item>/update-location', methods=['GET', 'POST'])
-def updateItemLocation(name, item):
+@app.route('/<possessor>/<item>/update-location', methods=['GET', 'POST'])
+def updateItemLocation(possessor, item):
 	form = submitItemLocationUpdate()
 	if form.validate_on_submit():
-		putData = {'location' : form.location.data, 'name' : form.name.data}
-		firebase.patch('/items/'+name+'/'+item, putData)
-		moveItem(name, item, putData['name'])
+		putData = {'location' : form.location.data, 'possessor' : form.possessor.data}
+		firebase.patch('/items/'+possessor+'/'+item, putData)
+		moveItem(possessor, item, putData['possessor'])
 		return render_template('generic-success.html')
 	return render_template('update-location.html', form=form)
 

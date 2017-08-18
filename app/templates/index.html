@@ -7,8 +7,8 @@
 
 	{% for user in results.items() %}
 		{% for entry in user[1].items() %}
-			<a href="/{{entry[1].name}}/{{entry[1].item}}"><b>{{entry[1].item}}</b></a> with 
-			<a href="/user/{{entry[1].name}}""><b>{{entry[1].name}}</b></a> in 
+			<a href="/{{entry[1].possessor}}/{{entry[1].item}}"><b>{{entry[1].item}}</b></a> with 
+			<a href="/user/{{entry[1].possessor}}""><b>{{entry[1].possessor}}</b></a> in 
 			<a href="/location/{{entry[1].location}}"><b>{{entry[1].location}}</b></a><br>
 		{% endfor %}
 	{% endfor %}

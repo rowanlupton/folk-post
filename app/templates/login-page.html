@@ -1,0 +1,39 @@
+{% extends 'basic.html' %}
+
+{% block title %}
+  login
+  {{super()}}
+{% endblock title %}
+
+{% block head %}
+  {{super()}}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/item-submission.css') }}" />
+{% endblock head%}
+
+{% block header %}
+  {{super()}}
+  <h3>item submission</h3>
+{% endblock header%}
+
+{% block content %}
+  <h4>Please complete the form below</h4>
+  <form action="" method="post" name="api">
+    {{ form.csrf_token }}
+
+    <p> username: <br>
+    {{ form.username(size=40) }}<br>
+    {% for error in form.username.errors %}
+      <span class="error">[{{ error }}]</span>
+    {% endfor %}</p>
+
+    <p> password: <br>
+    {{ form.password }}<br>
+    {% for error in form.password.errors %}
+      <span class="error">[{{ error }}]</span>
+    {% endfor %}</p>
+    
+    <p><input type ="submit" value="login" class="btn btn-sm btn-primary"></p>
+
+    <p><a href="/register">new user?</a>
+  </form>
+{% endblock %}

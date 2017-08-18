@@ -2,9 +2,9 @@
 
 {% block title %}index{% endblock title%}
 
-<a href="/submission">new submission</a>
-
 {% block content %}
+	<a href="/submission">new submission</a>
+
 	{% for user in results.items() %}
 		{% for entry in user[1].items() %}
 			<a href="/{{entry[1].name}}/{{entry[1].item}}">{{entry[1].item}} with {{entry[1].name}} in {{entry[1].location}}</a><br>

@@ -7,7 +7,7 @@
 
 	{% for user in results.items() %}
 		{% for entry in user[1].items() %}
-			<a href="/{{entry[1].name}}/{{entry[1].item}}">{{entry[1].item}} with {{entry[1].name}} in {{entry[1].location}}</a><br>
+			<a href="/{{entry[1].name}}/{{entry[1].item}}"><b>{{entry[1].item}}</b> with <b>{{entry[1].name}}</b> in <b>{{entry[1].location}}</b></a><br>
 		{% endfor %}
 	{% endfor %}
 {% endblock content%}

@@ -11,6 +11,7 @@ class userRegister(FlaskForm):
 	username = StringField('username', validators=[DataRequired()])
 	password = PasswordField('password', validators=[DataRequired()])
 	passwordConfirm = PasswordField('passwordConfirm', validators=[DataRequired()])
+	#location = StringField('location', validators=[DataRequired()])
 
 class submitItem(FlaskForm):
 	item = StringField('item', validators=[DataRequired()])

@@ -5,11 +5,8 @@
 {% block content %}
 	<h3><a href="/submission">new submission</a></h3>
 
-	{% for user in results.items() %}
-		{% for entry in user[1].items() %}
-			<a href="/{{entry[1].possessor}}/{{entry[1].item}}"><b>{{entry[1].item}}</b></a> with 
-			<a href="/user/{{entry[1].possessor}}""><b>{{entry[1].possessor}}</b></a> in 
-			<a href="/location/{{entry[1].location}}"><b>{{entry[1].location}}</b></a><br>
-		{% endfor %}
+	{% for i in results.items() %}
+		<p>{{i[1].item}}</p>
 	{% endfor %}
+
 {% endblock content%}

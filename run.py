@@ -3,18 +3,24 @@ from flask import Flask, render_template, request, session, flash
 from flask import current_app as current_app
 from app.views import userLogin, userRegister, submitItem, submitItemClaim, submitItemLocationUpdate, confirmDeleteItem
 from flask_wtf.csrf import CSRFProtect
-from firebase_admin import credentials
+import firebase_admin
+from firebase_admin import credentials, db
+
+cred = credentials.Certificate('./folk-post-firebase-adminsdk-mgffy-1f546500e6.json')
+firebase_admin.initialize_app(cred, { 'databaseURL' : 'https://folk-post.firebaseio.com'})
 
 app = Flask(__name__, template_folder='app/templates')
 app.config.from_object('config')
-firebase = firebase.FirebaseApplication('https://folk-post.firebaseio.com', None)
+#firebase = firebase.FirebaseApplication('https://folk-post.firebaseio.com', None)
 from app import views
-
+ref = db.reference('')
+items_ref = ref.child('items')
+users_ref = ref.child('users')
 
 
 @app.route('/')
 def index():
-	results = firebase.get('/items', None)
+	results = items_ref.get()
 	return render_template('index.html', results=results)
 
 
@@ -22,7 +28,7 @@ def index():
 def do_login():
 	form = userLogin()
 	if form.validate_on_submit():
-		if firebase.get('/users', form.username.data + '/password') == form.password.data:
+		if users_ref.child(form.username.data).child('password').get() == form.password.data:
 			session['logged_in'] = True
 			return index()
 		else:
@@ -36,8 +42,9 @@ def do_register():
 	if form.validate_on_submit():
 		if form.password.data == form.passwordConfirm.data:
 			putData = {'password' : form.password.data}
-			firebase.put('/users', form.username.data, putData)
+			users_ref.child(form.username.data).set(putData)
 			return render_template('generic-success.html')
+		return "passwords did not match"
 	return render_template('register-page.html', form=form)
 
 
@@ -46,7 +53,8 @@ def itemSubmission():
 	form = submitItem()
 	if form.validate_on_submit():
 		putData = {'item' : form.item.data, 'description' : form.description.data, 'possessor' : form.possessor.data, 'location' : form.location.data}
-		firebase.put('/items', putData['possessor'] + '/' + putData['item'], putData)
+		items_ref.push(putData)
+		#firebase.put('/items', putData['possessor'] + '/' + putData['item'], putData)
 		return render_template('api-put-result.html', form=form, putData=putData)
 	return render_template('submit-item.html', form=form)
 

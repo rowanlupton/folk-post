@@ -6,7 +6,9 @@
 	<h3><a href="/submission">new submission</a></h3>
 
 	{% for i in results.items() %}
-		<p>{{i[1].item}}</p>
+		<p>
+			<a href="">{{i[1].item}}</a> with <a href=""></a> in <a href=""></a>
+		</p>
 	{% endfor %}
 
 {% endblock content%}

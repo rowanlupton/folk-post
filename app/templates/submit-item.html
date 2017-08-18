@@ -1,0 +1,48 @@
+{% extends 'basic.html' %}
+
+{% block title %}
+  item submission
+{% endblock title %}
+
+{% block head %}
+  {{super()}}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/item-submission.css') }}" />
+{% endblock head%}
+
+{% block header %}
+  {{super()}}
+  <h3>item submission</h3>
+{% endblock header%}
+
+{% block content %}
+  <h4>Please complete the form below</h4>
+  <form action="" method="post" name="api">
+    {{ form.csrf_token }}
+
+    <p> Please enter an item you want to add: <br>
+    {{ form.item(size=40) }}<br>
+    {% for error in form.item.errors %}
+      <span class="error">[{{ error }}]</span>
+    {% endfor %}</p>
+
+    <p> write a short description of the item: <br>
+    {{ form.description }}<br>
+    {% for error in form.description.errors %}
+      <span class="error">[{{ error }}]</span>
+    {% endfor %}</p>
+
+    <p> your name: <br>      
+    {{ form.name(size=40) }} <br>
+    {% for error in form.name.errors %}
+      <span class="error">[{{ error }}]</span>
+    {% endfor %}</p>
+
+    <p> your location: <br>
+    {{ form.location(size=40) }} <br>
+    {% for error in form.location.errors %}
+      <span class="error">[{{ error }}]</span>
+    {% endfor %}</p>
+    
+    <p><input type ="submit" value="Add" class="btn btn-sm btn-primary"></p>
+  </form>
+{% endblock %}

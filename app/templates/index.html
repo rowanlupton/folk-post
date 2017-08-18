@@ -1,0 +1,12 @@
+{%extends 'basic.html'%}
+
+{% block title %}index{% endblock title%}
+
+
+{% block content %}
+	{% for user in results.items() %}
+		{% for entry in user[1].items() %}
+			<a href="/{{entry[1].name}}/{{entry[1].item}}">{{entry[1].item}} with {{entry[1].name}} in {{entry[1].location}}</a><br>
+		{% endfor %}
+	{% endfor %}
+{% endblock content%}

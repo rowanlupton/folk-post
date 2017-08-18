@@ -7,7 +7,7 @@
 
 	{% for i in results.items() %}
 		<p>
-			<a href="/{{i[0]}}">{{i[1].item}}</a> with <a href="">{{i[1].possessor}}</a> in <a href="">{{i[1].location}}</a>
+			<a href="/items/{{i[0]}}">{{i[1].item}}</a> with {{i[1].possessor}} in {{i[1].location}}
 		</p>
 	{% endfor %}
 

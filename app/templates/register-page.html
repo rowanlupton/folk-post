@@ -12,6 +12,12 @@
       <span class="error">[{{ error }}]</span>
     {% endfor %}</p>
 
+    <p> location: <br>
+    {{ form.location(size=40) }}<br>
+    {% for error in form.location.errors %}
+      <span class="error">[{{ error }}]</span>
+    {% endfor %}</p>
+
     <p> password: <br>
     {{ form.password }}<br>
     {% for error in form.password.errors %}

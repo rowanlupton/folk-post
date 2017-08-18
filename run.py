@@ -41,7 +41,7 @@ def do_register():
 	form = userRegister()
 	if form.validate_on_submit():
 		if form.password.data == form.passwordConfirm.data:
-			putData = {'password' : form.password.data}
+			putData = {'password' : form.password.data, 'location' : form.location.data}
 			users_ref.child(form.username.data).set(putData)
 			return render_template('generic-success.html')
 		return "passwords did not match"
@@ -54,7 +54,6 @@ def itemSubmission():
 	if form.validate_on_submit():
 		putData = {'item' : form.item.data, 'description' : form.description.data, 'possessor' : form.possessor.data, 'location' : form.location.data}
 		items_ref.push(putData)
-		#firebase.put('/items', putData['possessor'] + '/' + putData['item'], putData)
 		return render_template('api-put-result.html', form=form, putData=putData)
 	return render_template('submit-item.html', form=form)
 
@@ -69,11 +68,10 @@ def viewLocation(location):
 	return render_template('location.html')
 
 
-@app.route('/<name>/<item>')
-def viewItem(name, item):
-	result = firebase.get('/items', name)
-	result = result[item]
-	return render_template('fetch-item-result.html', result=result)
+@app.route('/items/<key>')
+def viewItem(key):
+	result = items_ref.child(key).get()
+	return render_template('view-item.html', result=result)
 
 
 @app.route('/<name>/<item>/claim', methods=['GET', 'POST'])

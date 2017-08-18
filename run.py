@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, session, flash
 from flask import current_app as current_app
 from app.views import userLogin, userRegister, submitItem, submitItemClaim, submitItemLocationUpdate, confirmDeleteItem
 from flask_wtf.csrf import CSRFProtect
+from firebase_admin import credentials
 
 app = Flask(__name__, template_folder='app/templates')
 app.config.from_object('config')

@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, request, session, flash
 from flask import current_app as current_app
 from app.views import userLogin, userRegister, submitItem, submitItemClaim, submitItemPossessorUpdate, confirmDeleteItem
@@ -6,7 +7,7 @@ import firebase_admin
 from firebase_admin import credentials, db
 import flask_login
 
-cred = credentials.Certificate(process.env.ADMIN_SDK)
+cred = credentials.Certificate(os.environ['ADMIN_SDK'])
 firebase_admin.initialize_app(cred, { 'databaseURL' : 'https://folk-post.firebaseio.com'})
 
 app = Flask(__name__, template_folder='app/templates')

@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, request, session, flash
 from flask import current_app as current_app
 from app.views import userLogin, userRegister, submitItem, submitItemClaim, submitItemPossessorUpdate, confirmDeleteItem
@@ -5,19 +6,18 @@ from flask_wtf.csrf import CSRFProtect
 import firebase_admin
 from firebase_admin import credentials, db
 import flask_login
-import dotenv
 
-dotenv.load()
-cred = credentials.Certificate({"type": "service_account",
-																"project_id": "folk-post",
-																"private_key_id": "4bd8cc2e0acb62daefc8355793eda84e89228450",
-																"private_key": dotenv.get('private_key'),
-																"client_email": dotenv.get('client_email'),
-																"client_id": "105602536335211410284",
-																"auth_uri": "https://accounts.google.com/o/oauth2/auth",
-																"token_uri": "https://accounts.google.com/o/oauth2/token",
-																"auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-																"client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-mgffy%40folk-post.iam.gserviceaccount.com"})
+print(os.environ['private_key'])
+cred = firebase_admin.credentials.Certificate({"type": "service_account",
+																							 "project_id": "folk-post",
+																							 "private_key_id": "4bd8cc2e0acb62daefc8355793eda84e89228450",
+																							 "private_key": os.environ['private_key'],
+																							 "client_email": os.environ['client_email'],
+																							 "client_id": "105602536335211410284",
+																							 "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+																							 "token_uri": "https://accounts.google.com/o/oauth2/token",
+																							 "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+																							 "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-mgffy%40folk-post.iam.gserviceaccount.com"})
 firebase_admin.initialize_app(cred, { 'databaseURL' : 'https://folk-post.firebaseio.com'})
 
 app = Flask(__name__, template_folder='app/templates')
@@ -32,7 +32,7 @@ login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
 
 class User():
-	authenticated = users_ref.child().child('authenticated').get()
+	#authenticated = users_ref.child().child('authenticated').get()
 
 	def get_id(self):
 		return self.email

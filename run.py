@@ -1,7 +1,7 @@
 from firebase import firebase
 from flask import Flask, render_template, request, session, flash
 from flask import current_app as current_app
-from app.views import userLogin, userRegister, submitItem, submitItemClaim, submitItemLocationUpdate, confirmDeleteItem
+from app.views import userLogin, userRegister, submitItem, submitItemClaim, submitItemPossessorUpdate, confirmDeleteItem
 from flask_wtf.csrf import CSRFProtect
 import firebase_admin
 from firebase_admin import credentials, db
@@ -74,38 +74,30 @@ def viewItem(key):
 	return render_template('view-item.html', result=result)
 
 
-@app.route('/<name>/<item>/claim', methods=['GET', 'POST'])
-def claimItem(name, item):
+@app.route('/items/<key>/claim', methods=['GET', 'POST'])
+def claimItem(key):
 	form = submitItemClaim()
 	if form.validate_on_submit():
-		putData = {'owner' : form.owner.data}
-		firebase.patch('/items/'+name+'/'+item, putData)
+		items_ref.child(key).child('owner').set(form.owner.data)
 		return render_template('generic-success.html')
 	return render_template('claim-item.html', form=form)
 
 
-def moveItem(possessor, item, newName):
-	result = firebase.get('/items', possessor)
-	result = result[item]
-	firebase.delete('/items', possessor + '/' +item)
-	firebase.put('/items', newName + '/' + item, result)
-
-@app.route('/<possessor>/<item>/update-location', methods=['GET', 'POST'])
-def updateItemLocation(possessor, item):
-	form = submitItemLocationUpdate()
+@app.route('/<possessor>/<item>/update-possessor', methods=['GET', 'POST'])
+def updateItemPossessor(possessor, item):
+	form = submitItemPossessorUpdate()
 	if form.validate_on_submit():
-		putData = {'location' : form.location.data, 'possessor' : form.possessor.data}
-		firebase.patch('/items/'+possessor+'/'+item, putData)
-		moveItem(possessor, item, putData['possessor'])
+		putData = {'possessor' : form.possessor.data}
+		items_ref.child(item).update(putData)
 		return render_template('generic-success.html')
-	return render_template('update-location.html', form=form)
+	return render_template('update-possessor.html', form=form)
 
 
-@app.route('/<name>/<item>/delete', methods=['GET', 'POST'])
-def deleteItem(name, item):
+@app.route('/items/<item>/delete', methods=['GET', 'POST'])
+def deleteItem(item):
 	form = confirmDeleteItem()
 	if form.validate_on_submit():
-		firebase.delete('/items', name + '/' +item)
+		items_ref.child(item).delete()
 		return render_template('generic-success.html')
 	return render_template('confirm-delete-item.html', form=form)
 

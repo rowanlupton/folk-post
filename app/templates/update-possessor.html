@@ -7,18 +7,12 @@
 	<form action="" method="post" name="api">
     {{ form.csrf_token }}
 
-    <p>item's new location: <br>
-    {{ form.location(size=40) }}<br>
-    {% for error in form.location.errors %}
-      <span class="error">[{{ error }}]</span>
-    {% endfor %}</p>
-
     <p> your name: <br>      
     {{ form.possessor(size=40) }} <br>
     {% for error in form.possessor.errors %}
       <span class="error">[{{ error }}]</span>
     {% endfor %}</p>
 
-    <p><input type ="submit" value="update location" class="btn btn-sm btn-primary"></p>
+    <p><input type ="submit" value="update possessor" class="btn btn-sm btn-primary"></p>
   </form>
 {% endblock content%}

@@ -22,8 +22,7 @@ class submitItem(FlaskForm):
 class submitItemClaim(FlaskForm):
 	owner = StringField('owner', validators=[DataRequired()])
 
-class submitItemLocationUpdate(FlaskForm):
-	location = StringField('location', validators=[DataRequired()])
+class submitItemPossessorUpdate(FlaskForm):
 	possessor = StringField('possessor', validators=[DataRequired()])
 
 class confirmDeleteItem(FlaskForm):

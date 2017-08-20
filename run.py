@@ -7,7 +7,6 @@ import firebase_admin
 from firebase_admin import credentials, db
 import flask_login
 
-print(os.environ['private_key'])
 cred = firebase_admin.credentials.Certificate({"type": "service_account",
 																							 "project_id": "folk-post",
 																							 "private_key_id": "4bd8cc2e0acb62daefc8355793eda84e89228450",
@@ -17,7 +16,7 @@ cred = firebase_admin.credentials.Certificate({"type": "service_account",
 																							 "auth_uri": "https://accounts.google.com/o/oauth2/auth",
 																							 "token_uri": "https://accounts.google.com/o/oauth2/token",
 																							 "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-																							 "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-mgffy%40folk-post.iam.gserviceaccount.com"})
+																							 "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-mgffy@folk-post.iam.gserviceaccount.com"})
 firebase_admin.initialize_app(cred, { 'databaseURL' : 'https://folk-post.firebaseio.com'})
 
 app = Flask(__name__, template_folder='app/templates')

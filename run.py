@@ -7,7 +7,7 @@ import firebase_admin
 from firebase_admin import credentials, db
 import flask_login
 
-cred = os.environ['ADMIN_SDK']
+cred = credentials.Certificate.Base(os.environ['ADMIN_SDK'])
 firebase_admin.initialize_app(cred, { 'databaseURL' : 'https://folk-post.firebaseio.com'})
 
 app = Flask(__name__, template_folder='app/templates')

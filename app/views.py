@@ -41,7 +41,7 @@ def do_register():
 	if form.validate_on_submit():
 		if form.password.data == form.passwordConfirm.data:
 			passwordHash = User.hash_password(form.password.data)
-			putData = {'_id': form.username.data,'password' : passwordHash, 'location' : form.location.data}
+			putData = {'_id': form.username.data, 'email': form.email.data, 'password' : passwordHash, 'location' : form.location.data}
 			mongo.db.users.insert_one(putData)
 			return render_template('generic-success.html')
 		return "passwords did not match"

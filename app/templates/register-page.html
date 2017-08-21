@@ -10,6 +10,12 @@
       <span class="error">[{{ error }}]</span>
     {% endfor %}</p>
 
+    <p> email: <br>
+    {{ form.email(size=40) }}<br>
+    {% for error in form.email.errors %}
+      <span class="error">[{{ error }}]</span>
+    {% endfor %}</p>
+
     <p> location: <br>
     {{ form.location(size=40) }}<br>
     {% for error in form.location.errors %}
@@ -28,7 +34,7 @@
       <span class="error">[{{ error }}]</span>
     {% endfor %}</p>
     
-    <p><input type ="submit" value="login" class="btn btn-sm btn-primary"></p>
+    <p><input type ="submit" value="register" class="btn btn-sm btn-primary"></p>
 
     <p><a href="/login">existing user?</a>
   </form>

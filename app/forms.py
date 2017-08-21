@@ -9,12 +9,17 @@ class userLogin(FlaskForm):
 
 class userRegister(FlaskForm):
 	username = StringField('username', validators=[DataRequired()])
+	name = StringField('name', validators=[DataRequired()])
 	email = StringField('email', validators=[DataRequired()])
 	password = PasswordField('password', validators=[DataRequired()])
 	passwordConfirm = PasswordField('passwordConfirm', validators=[DataRequired()])
 	location = StringField('location', validators=[DataRequired()])
 
-class submitItem(FlaskForm):
+class submitLostItem(FlaskForm):
+	item = StringField('item', validators=[DataRequired()])
+	description = TextAreaField('description', validators=[DataRequired()])
+
+class submitFoundItem(FlaskForm):
 	item = StringField('item', validators=[DataRequired()])
 	description = TextAreaField('description', validators=[DataRequired()])
 

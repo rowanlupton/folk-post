@@ -1,0 +1,36 @@
+{% extends 'basic.html' %}
+
+{% block title %}
+  lost item
+{% endblock title %}
+
+{% block head %}
+  {{super()}}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/item-submission.css') }}" />
+{% endblock head%}
+
+{% block header %}
+  {{super()}}
+  <h3>I lost an item!</h3>
+{% endblock header%}
+
+{% block content %}
+  <h4>Please complete the form below</h4>
+  <form action="" method="post" name="api">
+    {{ form.csrf_token }}
+
+    <p> please enter a name for the item you lost: <br>
+    {{ form.item(size=40) }}<br>
+    {% for error in form.item.errors %}
+      <span class="error">[{{ error }}]</span>
+    {% endfor %}</p>
+
+    <p> write a short description of your item: <br>
+    {{ form.description }}<br>
+    {% for error in form.description.errors %}
+      <span class="error">[{{ error }}]</span>
+    {% endfor %}</p>
+    
+    <p><input type ="submit" value="Add" class="btn btn-sm btn-primary"></p>
+  </form>
+{% endblock %}

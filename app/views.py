@@ -1,7 +1,7 @@
 from app import app, lm
 from flask import Flask, render_template, request, session, flash, redirect, url_for
 from flask_login import login_user, logout_user, login_required, current_user
-from .forms import userLogin, userRegister, submitItem, submitItemClaim, submitItemPossessorUpdate, confirmDeleteItem
+from .forms import userLogin, userRegister, submitFoundItem, submitLostItem, submitItemClaim, submitItemPossessorUpdate, confirmDeleteItem
 from .users import User
 from bson.objectid import ObjectId
 from flask_pymongo import PyMongo
@@ -41,7 +41,7 @@ def do_register():
 	if form.validate_on_submit():
 		if form.password.data == form.passwordConfirm.data:
 			passwordHash = User.hash_password(form.password.data)
-			putData = {'_id': form.username.data, 'email': form.email.data, 'password' : passwordHash, 'location' : form.location.data}
+			putData = {'_id': form.username.data, 'name': form.name.data, 'email': form.email.data, 'password' : passwordHash, 'location' : form.location.data}
 			mongo.db.users.insert_one(putData)
 			return render_template('generic-success.html')
 		return "passwords did not match"
@@ -53,16 +53,25 @@ def do_logout():
 	return redirect(url_for('login'))
 
 
-@app.route('/submission', methods=['GET', 'POST'])
+@app.route('/found-item', methods=['GET', 'POST'])
 @login_required
-def itemSubmission():
-	form = submitItem()
+def foundItemSubmission():
+	form = submitFoundItem()
 	if form.validate_on_submit():
 		putData = {'item' : form.item.data, 'description' : form.description.data, 'possessor' : current_user.username}
 		mongo.db.items.insert_one(putData)
 		return render_template('api-put-result.html', form=form, putData=putData)
-	return render_template('submit-item.html', form=form)
+	return render_template('found-item.html', form=form)
 
+@app.route('/lost-item', methods=['GET', 'POST'])
+@login_required
+def lostItemSubmission():
+	form = submitLostItem()
+	if form.validate_on_submit():
+		putData = {'item' : form.item.data, 'description' : form.description.data, 'owner' : current_user.username}
+		mongo.db.items.insert_one(putData)
+		return render_template('api-put-result.html', form=form, putData=putData)
+	return render_template('lost-item.html', form=form)
 
 @app.route('/user/<name>')
 def viewUser(name):

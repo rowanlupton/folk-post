@@ -3,11 +3,11 @@
 {% block title %}index{% endblock title%}
 
 {% block content %}
-	<h3><a href="/submission">new submission</a></h3>
+	<h3><a href="/lost-item">lost something?</a>  <a href="/found-item">found something?</a></h3>
 
 	{% for i in items %}
 		<p>
-			<a href="/items/{{i._id}}">{{i.item}}</a> with {{i.possessor}} in {{mongo.db.users.find_one({'_id': i.possessor})['location']}}
+			<a href="/items/{{i._id}}">{{i.item}}</a> with {{mongo.db.users.find_one({'_id': i.possessor})['name']}} in {{mongo.db.users.find_one({'_id': i.possessor})['location']}}
 		</p>
 	{% endfor %}
 

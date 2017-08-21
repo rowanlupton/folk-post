@@ -1,7 +1,7 @@
 {% extends 'basic.html' %}
 
 {% block title %}
-  item submission
+  found item
 {% endblock title %}
 
 {% block head %}
@@ -11,7 +11,7 @@
 
 {% block header %}
   {{super()}}
-  <h3>item submission</h3>
+  <h3>I found an item!</h3>
 {% endblock header%}
 
 {% block content %}
@@ -19,7 +19,7 @@
   <form action="" method="post" name="api">
     {{ form.csrf_token }}
 
-    <p> Please enter an item you want to add: <br>
+    <p> please enter a name for the item you found: <br>
     {{ form.item(size=40) }}<br>
     {% for error in form.item.errors %}
       <span class="error">[{{ error }}]</span>

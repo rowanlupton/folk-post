@@ -1,16 +1,16 @@
 {% extends 'basic.html' %}
 
 {% block title %}
-	"{{result['item']}}" details
+	"{{result.item}}" details
 {% endblock title %}
 
 {% block content %}
-	<p><b>item:</b> 									{{result['item']}}</p>
-	<p><b>description:</b> 						{{result['description']}}</p>
-	<p><b>person who has it:</b> 			{{result['possessor']}}</p>
-	<p><b>where it is:</b> 						{{result['location']}}</p>
-	<p><b>who does it belong to:</b> 	{% if result['owner'] is defined %}
-																			{{result['owner']}}
+	<p><b>item:</b> 									{{result.item}}</p>
+	<p><b>description:</b> 						{{result.description}}</p>
+	<p><b>person who has it:</b> 			{{result.possessor}}</p>
+	<p><b>where it is:</b> 						{{result.location}}</p>
+	<p><b>who does it belong to:</b> 	{% if result.owner is defined %}
+																			{{result.owner}}
 																		{% else %}
 																			unclaimed 
 																		{% endif %}</p>

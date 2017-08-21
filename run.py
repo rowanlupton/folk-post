@@ -5,6 +5,7 @@ from app.views import userLogin, userRegister, submitItem, submitItemClaim, subm
 from flask_wtf.csrf import CSRFProtect
 import flask_login
 from flask_pymongo import PyMongo
+from bson.objectid import ObjectId
 
 
 app = Flask(__name__, template_folder='app/templates')
@@ -52,51 +53,51 @@ def itemSubmission():
 	form = submitItem()
 	if form.validate_on_submit():
 		putData = {'item' : form.item.data, 'description' : form.description.data, 'possessor' : form.possessor.data, 'location' : form.location.data}
-		mongo.db.itemSubmission.insert_one(putData)
+		mongo.db.items.insert_one(putData)
 		return render_template('api-put-result.html', form=form, putData=putData)
 	return render_template('submit-item.html', form=form)
 
 
-# @app.route('/user/<name>')
-# def viewUser(name):
-# 	return render_template('user.html')
+@app.route('/user/<name>')
+def viewUser(name):
+	return render_template('user.html')
 
 
-# @app.route('/location/<location>')
-# def viewLocation(location):
-# 	return render_template('location.html')
+@app.route('/location/<location>')
+def viewLocation(location):
+	return render_template('location.html')
 
 
-# @app.route('/items/<key>')
-# def viewItem(key):
-# 	result = items_ref.child(key).get()
-# 	return render_template('view-item.html', result=result)
+@app.route('/items/<key>')
+def viewItem(key):
+	result = mongo.db.items.find_one({'_id': ObjectId(key)})
+	return render_template('view-item.html', result=result)
 
 
-# @app.route('/items/<key>/claim', methods=['GET', 'POST'])
-# def claimItem(key):
-# 	form = submitItemClaim()
-# 	if form.validate_on_submit():
-# 		items_ref.child(key).child('owner').set(form.owner.data)
-# 		return render_template('generic-success.html')
-# 	return render_template('claim-item.html', form=form)
+@app.route('/items/<key>/claim', methods=['GET', 'POST'])
+def claimItem(key):
+	form = submitItemClaim()
+	if form.validate_on_submit():
+		mongo.db.items.update_one({'_id': ObjectId(key)}, {"$set": {'owner': form.owner.data}})
+		return render_template('generic-success.html')
+	return render_template('claim-item.html', form=form)
 
 
-# @app.route('/<possessor>/<item>/update-possessor', methods=['GET', 'POST'])
-# def updateItemPossessor(possessor, item):
-# 	form = submitItemPossessorUpdate()
-# 	if form.validate_on_submit():
-# 		putData = {'possessor' : form.possessor.data}
-# 		items_ref.child(item).update(putData)
-# 		return render_template('generic-success.html')
-# 	return render_template('update-possessor.html', form=form)
+@app.route('/items/<key>/update-possessor', methods=['GET', 'POST'])
+def updateItemPossessor(key):
+	form = submitItemPossessorUpdate()
+	if form.validate_on_submit():
+		putData = {'possessor' : form.possessor.data}
+		mongo.db.items.update_one({'_id': ObjectId(key)}, {"$set": {'possessor': form.possessor.data}})
+		return render_template('generic-success.html')
+	return render_template('update-possessor.html', form=form)
 
 
-# @app.route('/items/<item>/delete', methods=['GET', 'POST'])
-# def deleteItem(item):
-# 	form = confirmDeleteItem()
-# 	if form.validate_on_submit():
-# 		items_ref.child(item).delete()
-# 		return render_template('generic-success.html')
-# 	return render_template('confirm-delete-item.html', form=form)
+@app.route('/items/<key>/delete', methods=['GET', 'POST'])
+def deleteItem(key):
+	form = confirmDeleteItem()
+	if form.validate_on_submit():
+		mongo.db.items.delete_one({'_id': ObjectId(key)})
+		return render_template('generic-success.html')
+	return render_template('confirm-delete-item.html', form=form)
 

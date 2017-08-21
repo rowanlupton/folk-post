@@ -78,7 +78,7 @@ def viewLocation(location):
 @app.route('/items/<key>')
 def viewItem(key):
 	result = mongo.db.items.find_one({'_id': ObjectId(key)})
-	return render_template('view-item.html', result=result)
+	return render_template('view-item.html', result=result, mongo=mongo)
 
 
 @app.route('/items/<key>/claim', methods=['GET', 'POST'])

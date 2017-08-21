@@ -18,10 +18,10 @@ class submitItem(FlaskForm):
 	description = TextAreaField('description', validators=[DataRequired()])
 
 class submitItemClaim(FlaskForm):
-	owner = StringField('owner', validators=[DataRequired()])
+	yes = SubmitField(label="yes")
 
 class submitItemPossessorUpdate(FlaskForm):
-	possessor = StringField('possessor', validators=[DataRequired()])
+	yes = SubmitField(label="yes")
 
 class confirmDeleteItem(FlaskForm):
 	yes = SubmitField(label="yes")

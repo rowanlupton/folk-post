@@ -8,7 +8,7 @@
 	<p><b>item:</b> 									{{result.item}}</p>
 	<p><b>description:</b> 						{{result.description}}</p>
 	<p><b>person who has it:</b> 			{{result.possessor}}</p>
-	<p><b>where it is:</b> 						{{result.location}}</p>
+	<p><b>where it is:</b> 						{{mongo.db.users.find_one({'_id': result.possessor})['location']}}</p>
 	<p><b>who does it belong to:</b> 	{% if result.owner is defined %}
 																			{{result.owner}}
 																		{% else %}

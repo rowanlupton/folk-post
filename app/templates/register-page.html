@@ -4,8 +4,6 @@
 	<form action="" method="post" name="api">
     {{ form.csrf_token }}
 
-    **do not use a password that you use anywhere else; this is just for demonstration, it's not encrypted in any way**
-
     <p> username: <br>
     {{ form.username(size=40) }}<br>
     {% for error in form.username.errors %}

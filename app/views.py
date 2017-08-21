@@ -1,5 +1,5 @@
 from app import app, lm
-from flask import Flask, render_template, request, session, flash
+from flask import Flask, render_template, request, session, flash, redirect, url_for
 from flask_login import login_user, logout_user, login_required
 from .forms import userLogin, userRegister, submitItem, submitItemClaim, submitItemPossessorUpdate, confirmDeleteItem
 from .users import User
@@ -16,37 +16,46 @@ def index():
 
 @lm.user_loader
 def load_user(username):
-    u = app.config['USERS_COLLECTION'].find_one({"_id": username})
+    u = mongo.db.users.find_one({"_id": username})
     if not u:
         return None
     return User(u['_id'])
 
-# @app.route('/login', methods=['GET', 'POST'])
-# def do_login():
-# 	form = userLogin()
-# 	if form.validate_on_submit():
-# 		if users_ref.child(form.username.data).child('password').get() == form.password.data:
-# 			flask_login.login_user()
-# 			return index()
-# 		else:
-# 			flash('wrong password')
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+	form = userLogin()
+	if form.validate_on_submit():
+		user = mongo.db.users.find_one({'_id': form.username.data})
+		if user and User.validate_login(user['password'], form.password.data):
+			user_obj = User(user['_id'])
+			login_user(user_obj)
+			flash("Logged in successfully!", category='success')
+			return redirect(request.args.get("next") or url_for('index'))
+		else:
+			flash('wrong username or password', category='error')
+	return render_template('login-page.html', form=form)
 
-# 	return render_template('login-page.html', form=form)
+@app.route('/register', methods=['GET', 'POST'])
+def do_register():
+	form = userRegister()
+	if form.validate_on_submit():
+		if form.password.data == form.passwordConfirm.data:
+			passwordHash = User.hash_password(form.password.data)
+			putData = {'_id': form.username.data,'password' : passwordHash, 'location' : form.location.data}
+			mongo.db.users.insert_one(putData)
+			# users_ref.child(form.username.data).set(putData)
+			return render_template('generic-success.html')
+		return "passwords did not match"
+	return render_template('register-page.html', form=form)
 
-# @app.route('/register', methods=['GET', 'POST'])
-# def do_register():
-# 	form = userRegister()
-# 	if form.validate_on_submit():
-# 		if form.password.data == form.passwordConfirm.data:
-# 			putData = {'password' : form.password.data, 'location' : form.location.data}
-# 			users_ref.child(form.username.data).set(putData)
-# 			return render_template('generic-success.html')
-# 		return "passwords did not match"
-# 	return render_template('register-page.html', form=form)
+@app.route('/logout')
+def do_logout():
+	logout_user()
+	return redirect(url_for('login'))
 
 
 @app.route('/submission', methods=['GET', 'POST'])
-# @flask_login.login_required
+@login_required
 def itemSubmission():
 	form = submitItem()
 	if form.validate_on_submit():
@@ -73,6 +82,7 @@ def viewItem(key):
 
 
 @app.route('/items/<key>/claim', methods=['GET', 'POST'])
+@login_required
 def claimItem(key):
 	form = submitItemClaim()
 	if form.validate_on_submit():
@@ -82,6 +92,7 @@ def claimItem(key):
 
 
 @app.route('/items/<key>/update-possessor', methods=['GET', 'POST'])
+@login_required
 def updateItemPossessor(key):
 	form = submitItemPossessorUpdate()
 	if form.validate_on_submit():
@@ -92,6 +103,7 @@ def updateItemPossessor(key):
 
 
 @app.route('/items/<key>/delete', methods=['GET', 'POST'])
+@login_required
 def deleteItem(key):
 	form = confirmDeleteItem()
 	if form.validate_on_submit():

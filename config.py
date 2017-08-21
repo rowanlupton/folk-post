@@ -2,6 +2,7 @@ import os
 from pymongo import MongoClient
 
 WTF_CSRF_ENABLED = True
+SECRET_KEY = os.environ['secret_key']
 DB_NAME = 'folk-post'
 
 

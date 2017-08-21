@@ -44,7 +44,7 @@
 				logged in as: {{ current_user.username }}
 				<a href="/logout">logout</a>
 			{% else: %}
-				<a href="/login">login</a>
+				<a href="{{url_for('login')}}">login</a>
 			{% endif %}
 			</div>
 		{% endblock footer %}

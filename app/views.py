@@ -43,7 +43,6 @@ def do_register():
 			passwordHash = User.hash_password(form.password.data)
 			putData = {'_id': form.username.data,'password' : passwordHash, 'location' : form.location.data}
 			mongo.db.users.insert_one(putData)
-			# users_ref.child(form.username.data).set(putData)
 			return render_template('generic-success.html')
 		return "passwords did not match"
 	return render_template('register-page.html', form=form)

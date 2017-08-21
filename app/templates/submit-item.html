@@ -30,18 +30,6 @@
     {% for error in form.description.errors %}
       <span class="error">[{{ error }}]</span>
     {% endfor %}</p>
-
-    <p> your name: <br>      
-    {{ form.possessor(size=40) }} <br>
-    {% for error in form.possessor.errors %}
-      <span class="error">[{{ error }}]</span>
-    {% endfor %}</p>
-
-    <p> your location: <br>
-    {{ form.location(size=40) }} <br>
-    {% for error in form.location.errors %}
-      <span class="error">[{{ error }}]</span>
-    {% endfor %}</p>
     
     <p><input type ="submit" value="Add" class="btn btn-sm btn-primary"></p>
   </form>

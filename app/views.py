@@ -1,6 +1,6 @@
 from app import app, lm
 from flask import Flask, render_template, request, session, flash, redirect, url_for
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 from .forms import userLogin, userRegister, submitItem, submitItemClaim, submitItemPossessorUpdate, confirmDeleteItem
 from .users import User
 from bson.objectid import ObjectId
@@ -11,7 +11,7 @@ mongo = PyMongo(app)
 @app.route('/')
 def index():
 	results = mongo.db.items.find()
-	return render_template('index.html', items=results)
+	return render_template('index.html', items=results, mongo=mongo)
 
 
 @lm.user_loader
@@ -59,7 +59,7 @@ def do_logout():
 def itemSubmission():
 	form = submitItem()
 	if form.validate_on_submit():
-		putData = {'item' : form.item.data, 'description' : form.description.data, 'possessor' : form.possessor.data, 'location' : form.location.data}
+		putData = {'item' : form.item.data, 'description' : form.description.data, 'possessor' : current_user.username}
 		mongo.db.items.insert_one(putData)
 		return render_template('api-put-result.html', form=form, putData=putData)
 	return render_template('submit-item.html', form=form)
@@ -86,7 +86,7 @@ def viewItem(key):
 def claimItem(key):
 	form = submitItemClaim()
 	if form.validate_on_submit():
-		mongo.db.items.update_one({'_id': ObjectId(key)}, {"$set": {'owner': form.owner.data}})
+		mongo.db.items.update_one({'_id': ObjectId(key)}, {"$set": {'owner': current_user.username}})
 		return render_template('generic-success.html')
 	return render_template('claim-item.html', form=form)
 
@@ -96,8 +96,7 @@ def claimItem(key):
 def updateItemPossessor(key):
 	form = submitItemPossessorUpdate()
 	if form.validate_on_submit():
-		putData = {'possessor' : form.possessor.data}
-		mongo.db.items.update_one({'_id': ObjectId(key)}, {"$set": {'possessor': form.possessor.data}})
+		mongo.db.items.update_one({'_id': ObjectId(key)}, {"$set": {'possessor': current_user.username}})
 		return render_template('generic-success.html')
 	return render_template('update-possessor.html', form=form)
 

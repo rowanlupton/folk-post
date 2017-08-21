@@ -16,8 +16,6 @@ class userRegister(FlaskForm):
 class submitItem(FlaskForm):
 	item = StringField('item', validators=[DataRequired()])
 	description = TextAreaField('description', validators=[DataRequired()])
-	possessor = StringField('possessor', validators=[DataRequired()])
-	location = StringField('location', validators=[DataRequired()])
 
 class submitItemClaim(FlaskForm):
 	owner = StringField('owner', validators=[DataRequired()])

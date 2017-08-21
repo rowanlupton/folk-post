@@ -39,7 +39,14 @@
 		{% block footer %}
 			<hr>
 			<div>website created by <a href="http://web.rowanlupton.com">Rowan Lupton</a></div>
-			<div><a href="/login">login</a>
+			<div>
+			{% if current_user.is_authenticated: %}
+				logged in as: {{ current_user.username }}
+				<a href="/logout">logout</a>
+			{% else: %}
+				<a href="/login">login</a>
+			{% endif %}
+			</div>
 		{% endblock footer %}
 	</div>
 	</body>

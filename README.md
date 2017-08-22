@@ -16,17 +16,17 @@ Sure! It's on github, after all.
 support for changing a user's information
 
 ### medium-term
-make it pretty
-add event field
-	with autocomplete, ideally, to allow for effective searching
-images of items (use GridFS, probably)
-make user page
+* make it pretty
+* add event field
+** with autocomplete, ideally, to allow for effective searching
+* images of items (use GridFS, probably)
+* make user page
 
 ### long-term (if ever)
-proper locations
-	like, from openstreetmap or s/t
-email notifications 
-	when somebody claims an item you posted 
-	when an item you claimed moves
+* proper locations
+  * like, from openstreetmap or s/t
+* email notifications 
+  * when somebody claims an item you posted 
+  * when an item you claimed moves
 
 [1]transporting items (or people) through people traveling, rather than a normal postal service

@@ -18,7 +18,7 @@ support for changing a user's information
 ### medium-term
 * make it pretty
 * add event field
-** with autocomplete, ideally, to allow for effective searching
+  * with autocomplete, ideally, to allow for effective searching
 * images of items (use GridFS, probably)
 * make user page
 

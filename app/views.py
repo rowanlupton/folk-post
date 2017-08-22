@@ -57,7 +57,7 @@ def do_register():
 	form = userRegister()
 	if form.validate_on_submit():
 		if form.password.data == form.passwordConfirm.data:
-			if mongo.db.users.find({'_id': form.username.data}) is None:
+			if mongo.db.users.find({'_id': form.username.data}) == None:
 				passwordHash = User.hash_password(form.password.data)
 				putData = {'_id': form.username.data, 'name': form.name.data, 'email': form.email.data, 'password' : passwordHash, 'location' : form.location.data}
 				mongo.db.users.insert_one(putData)

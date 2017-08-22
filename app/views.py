@@ -14,7 +14,7 @@ def index():
 	if form.validate_on_submit():
 		field = form.whichField.data
 		print(field)
-		if field == 'name':
+		if field == 'item':
 			results = mongo.db.items.find({'item': {'$regex': form.searchQuery.data, '$options': 'i'}})
 		elif field == 'description':
 			results = mongo.db.items.find({'description': {'$regex': form.searchQuery.data, '$options': 'i'}})

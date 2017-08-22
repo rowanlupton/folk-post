@@ -1,6 +1,6 @@
 # folk-post
 ## what is this?
-Folk Post is an application that's meant to facilitate folk posting[^footnote] by providing a filterable database of items, where they are, and where they need to be.
+Folk Post is an application that's meant to facilitate folk posting[1] by providing a filterable database of items, where they are, and where they need to be.
 
 ## how do I use it?
 If you have an item that you figure somebody left at your home, click the "found something?" link at the top of the index page. If you lost an item, click the "lost something?" one. Follow instructions as given from there, and it will show up in the list - with any luck, somebody else will see it, and take appropriate actions!  
@@ -28,4 +28,4 @@ email notifications
 	when somebody claims an item you posted 
 	when an item you claimed moves
 
-[^footnote]transporting items (or people) through people traveling, rather than a normal postal service
+[1]transporting items (or people) through people traveling, rather than a normal postal service

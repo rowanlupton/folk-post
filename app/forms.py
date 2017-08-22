@@ -1,6 +1,13 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SubmitField, PasswordField
+from wtforms import StringField, TextAreaField, SubmitField, PasswordField, SelectField
 from wtforms.validators import DataRequired
+
+
+class indexForm(FlaskForm):
+	fieldChoices = [('name','name'),('description','description'),('possessor','possessor'),('owner','owner'),('currentLocation','current location'),('destination','destination')]
+	whichField = SelectField('field', choices = fieldChoices, validators=[DataRequired()])
+	searchQuery = StringField('query', validators=[DataRequired()])
+	filterButton = SubmitField('filter', validators=[DataRequired()])
 
 
 class userLogin(FlaskForm):

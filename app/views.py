@@ -1,17 +1,34 @@
 from app import app, lm
 from flask import Flask, render_template, request, session, flash, redirect, url_for
 from flask_login import login_user, logout_user, login_required, current_user
-from .forms import userLogin, userRegister, submitFoundItem, submitLostItem, submitItemClaim, submitItemPossessorUpdate, confirmDeleteItem
+from .forms import indexForm, userLogin, userRegister, submitFoundItem, submitLostItem, submitItemClaim, submitItemPossessorUpdate, confirmDeleteItem
 from .users import User
 from bson.objectid import ObjectId
 from flask_pymongo import PyMongo
 
 mongo = PyMongo(app)
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
+	form=indexForm()
+	if form.validate_on_submit():
+		field = form.whichField.data
+		print(field)
+		if field == 'name':
+			results = mongo.db.items.find({'item': {'$regex': form.searchQuery.data, '$options': 'i'}})
+		elif field == 'description':
+			results = mongo.db.items.find({'description': {'$regex': form.searchQuery.data, '$options': 'i'}})
+		elif field == 'possessor':
+			results = mongo.db.items.find({'possessor': {'$regex': form.searchQuery.data, '$options': 'i'}})
+		elif field == 'owner':
+			results = mongo.db.items.find({'owner': {'$regex': form.searchQuery.data, '$options': 'i'}})
+		elif field == 'currentLocation':
+			results = None
+		elif field == 'destination':
+			results = None
+		return render_template('index.html', items=results, mongo=mongo, form=form)
 	results = mongo.db.items.find()
-	return render_template('index.html', items=results, mongo=mongo)
+	return render_template('index.html', items=results, mongo=mongo, form=form)
 
 
 @lm.user_loader
@@ -40,11 +57,15 @@ def do_register():
 	form = userRegister()
 	if form.validate_on_submit():
 		if form.password.data == form.passwordConfirm.data:
-			passwordHash = User.hash_password(form.password.data)
-			putData = {'_id': form.username.data, 'name': form.name.data, 'email': form.email.data, 'password' : passwordHash, 'location' : form.location.data}
-			mongo.db.users.insert_one(putData)
-			return render_template('generic-success.html')
-		return "passwords did not match"
+			if mongo.db.users.find({'_id': form.username.data}) is None:
+				passwordHash = User.hash_password(form.password.data)
+				putData = {'_id': form.username.data, 'name': form.name.data, 'email': form.email.data, 'password' : passwordHash, 'location' : form.location.data}
+				mongo.db.users.insert_one(putData)
+				return render_template('generic-success.html')
+			flash("username taken")
+			return render_template('register-page.html', form=form)
+		flash("passwords did not match")
+		return render_template('register-page.html', form=form)
 	return render_template('register-page.html', form=form)
 
 @app.route('/logout')

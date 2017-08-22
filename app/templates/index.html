@@ -5,6 +5,15 @@
 {% block content %}
 	<h3><a href="/lost-item">lost something?</a>  <a href="/found-item">found something?</a></h3>
 
+	<form action="" method="post" name="api">
+    {{ form.csrf_token }}
+    Filter results:
+
+    {{ form.whichField }}
+	  {{ form.searchQuery }}
+	  {{ form.filterButton }}
+  </form>
+
 	{% for i in items %}
 		<p>
 			<a href="/items/{{i._id}}">{{i.item}}</a> with {{mongo.db.users.find_one({'_id': i.possessor})['name']}} in {{mongo.db.users.find_one({'_id': i.possessor})['location']}}

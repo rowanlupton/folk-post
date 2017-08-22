@@ -7,12 +7,6 @@
 	<form action="" method="post" name="api">
     {{ form.csrf_token }}
 
-    <p> your name: <br>      
-    {{ form.possessor(size=40) }} <br>
-    {% for error in form.possessor.errors %}
-      <span class="error">[{{ error }}]</span>
-    {% endfor %}</p>
-
     <p><input type ="submit" value="update possessor" class="btn btn-sm btn-primary"></p>
   </form>
 {% endblock content%}

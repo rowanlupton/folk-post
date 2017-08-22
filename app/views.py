@@ -57,13 +57,14 @@ def do_register():
 	form = userRegister()
 	if form.validate_on_submit():
 		if form.password.data == form.passwordConfirm.data:
-			if mongo.db.users.find({'_id': form.username.data}) == None:
+			if mongo.db.users.find({"_id": form.username.data}) != None:
 				passwordHash = User.hash_password(form.password.data)
 				putData = {'_id': form.username.data, 'name': form.name.data, 'email': form.email.data, 'password' : passwordHash, 'location' : form.location.data}
 				mongo.db.users.insert_one(putData)
 				return render_template('generic-success.html')
-			flash("username taken")
-			return render_template('register-page.html', form=form)
+			else: 
+				flash("username taken")
+				return render_template('register-page.html', form=form)
 		flash("passwords did not match")
 		return render_template('register-page.html', form=form)
 	return render_template('register-page.html', form=form)

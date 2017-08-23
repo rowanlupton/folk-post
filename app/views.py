@@ -13,19 +13,12 @@ def index():
 	form=indexForm()
 	if form.validate_on_submit():
 		field = form.whichField.data
-		print(field)
-		if field == 'item':
-			results = mongo.db.items.find({'item': {'$regex': form.searchQuery.data, '$options': 'i'}})
-		elif field == 'description':
-			results = mongo.db.items.find({'description': {'$regex': form.searchQuery.data, '$options': 'i'}})
-		elif field == 'possessor':
-			results = mongo.db.items.find({'possessor': {'$regex': form.searchQuery.data, '$options': 'i'}})
-		elif field == 'owner':
-			results = mongo.db.items.find({'owner': {'$regex': form.searchQuery.data, '$options': 'i'}})
-		elif field == 'currentLocation':
+		if field == 'currentLocation':
 			results = None
 		elif field == 'destination':
 			results = None
+		else:
+			results = mongo.db.items.find({field: {'$regex': form.searchQuery.data, '$options': 'i'}})
 		return render_template('index.html', items=results, mongo=mongo, form=form)
 	results = mongo.db.items.find()
 	return render_template('index.html', items=results, mongo=mongo, form=form)

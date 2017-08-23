@@ -16,7 +16,13 @@
 
 	{% for i in items %}
 		<p>
-			<a href="/items/{{i._id}}">{{i.item}}</a> with {{mongo.db.users.find_one({'_id': i.possessor})['name']}} in {{mongo.db.users.find_one({'_id': i.possessor})['location']}}
+			<a href="/items/{{i._id}}">{{i.item}}</a> 
+			{% if i.possessor is defined %} 
+			with {{ mongo.db.users.find_one({'_id': i.possessor})['name'] }}		
+			in {{mongo.db.users.find_one({'_id': i.possessor})['location']}}
+			{% else %}
+			with ?
+			{% endif %}
 		</p>
 	{% endfor %}
 

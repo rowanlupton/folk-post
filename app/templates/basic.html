@@ -2,7 +2,10 @@
 <html lang="en">
 	<head>
 		{% block head %}
-			<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+			<link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}" />
+			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+			{% block pageCSS %}{% endblock pageCSS %}
+			<link href="https://fonts.googleapis.com/css?family=Martel|Pontano+Sans" rel="stylesheet">
 			<title>{% block title %}{% endblock title %} - Folk Post</title>
 		{% endblock head %}
 	
@@ -15,13 +18,22 @@
 			<h1><div class="brand" id="company"><a href="/">
 				Folk Post
 			</a></div></h1>
+
+			<div class="sans-serif" id="newSubmissionLinks">
+				<h3>
+					<a href="/lost-item">lost something?</a>
+					<span class="spacer"></span>
+					<a href="/found-item">found something?</a>
+				</h3>
+			</div>
 		{% endblock header %}
 	</div>
-	<ul id="navigation">
 		
-	</ul>
-
 	<div class="wrapper">
+		<ul id="navigation">
+			
+		</ul>
+
 		{% with messages = get_flashed_messages() %}
 			{% if messages %}
 			  <ul class=flashes>
@@ -32,22 +44,24 @@
 			{% endif %}
 		{% endwith %}
 
-		{% block content %}{% endblock content %}
+		<div class="content">{% block content %}{% endblock content %}</div>
 	</div>
 
-	<div id="footer">
-		{% block footer %}
-			<hr>
-			<div>website created by <a href="http://web.rowanlupton.com">Rowan Lupton</a></div>
-			<div>
-			{% if current_user.is_authenticated: %}
-				logged in as: {{ current_user.username }}
-				<a href="/logout">logout</a>
-			{% else: %}
-				<a href="{{url_for('login')}}">login</a>
-			{% endif %}
-			</div>
-		{% endblock footer %}
-	</div>
+	<footer>
+		<div id="footerDiv">
+			{% block footer %}
+				<span>website created by <a href="http://web.rowanlupton.com">Rowan Lupton</a></span>
+				<span class="spacer"></span>
+				<span>
+				{% if current_user.is_authenticated: %}
+					logged in as: {{ current_user.username }}
+					<a href="/logout">logout</a>
+				{% else: %}
+					<a href="{{url_for('login')}}">login</a>
+				{% endif %}
+				</span>
+			{% endblock footer %}
+		</div>
+	</footer>
 	</body>
 </html>

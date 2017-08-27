@@ -1,13 +1,13 @@
 {%extends 'basic.html'%}
 
 {% block title %}index{% endblock title%}
+{% block pageCSS %}<link rel="stylesheet" href="{{ url_for('static',filename='css/index.css') }}" />{% endblock pageCSS %}
 
 {% block content %}
-	<h3><a href="/lost-item">lost something?</a>  <a href="/found-item">found something?</a></h3>
 
-	<form action="" method="post" name="api">
+	<form action="" method="post" name="api" id="filterOptions" class="sans-serif">
     {{ form.csrf_token }}
-    Filter results:
+    <h4>Filter results:</h4>
 
     {{ form.whichField }}
 	  {{ form.searchQuery }}

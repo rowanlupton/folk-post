@@ -1,0 +1,22 @@
+// '_footer.scss'
+
+footer {
+	min-height: 3em;
+	min-width: 100vw;
+	margin-top: 1em;	
+	background-color: #ddd;
+
+
+	#footerDiv {
+		font-family: $serif-font;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-around;
+		align-items: center;
+		min-height: 3em;
+
+		.spacer {
+		width: 10vw;
+	}
+	}
+}

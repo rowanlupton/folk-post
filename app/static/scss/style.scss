@@ -1,0 +1,48 @@
+// 'style.scss'
+
+@import 'defaultVariables';
+
+.sans-serif,h1, h2, h3, h4, h5, h6 {
+	font-family: $sans-serif-font;
+}
+.serif, p, li {
+	font-family: $serif-font;
+}
+
+a {
+	color: $primary-color;
+	text-decoration: none;
+}
+
+a:hover {
+	color: lighten($primary-color, 15%);
+}
+
+a:visited {
+	color: $secondary-color;
+}
+
+a:visited:hover {
+	color: lighten($secondary-color, 15%);
+}
+
+body {
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
+	margin: 0;
+
+
+	@import 'header';
+
+	.wrapper {
+		flex: 1;
+		font-family: $serif-font;
+		width: 80vw;
+		max-width: 1280px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+
+@import 'footer';

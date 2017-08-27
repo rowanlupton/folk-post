@@ -1,0 +1,27 @@
+// '_header.scss'
+
+#header {
+	width: 100vw;
+	text-align: center;
+	background-color: #ddd;
+
+	a {
+		text-decoration: none;
+		color: $primary-color;
+	}
+	a:hover {
+		color: lighten($primary-color, 15%);
+	}
+
+	#newSubmissionLinks {
+		text-align: center;
+		.spacer {
+			display: inline-block;
+			min-width: 3em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+	}
+}

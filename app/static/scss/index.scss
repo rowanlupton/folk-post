@@ -1,0 +1,50 @@
+// 'index.scss'
+
+@import 'defaultVariables';
+
+.wrapper {
+
+	.content {
+		#filterOptions {
+			* {
+				appearance: none;
+				-webkit-appearance: none;
+				-moz-appearance: none;
+
+				border: 2px solid $primary-color;
+				border-radius: 5px;
+				padding: 0.75em 1.5em;
+
+				font-size: 1em;
+			}
+			*:focus {
+				outline: none;
+				box-shadow: 0 0 10px $secondary-color;
+			}
+			h4 {
+				display: inline-block;
+				border: none;
+				padding: none;
+			}
+			select#whichField {
+				background: transparent url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' version='1.1' height='10px' width='15px'%3E%3Ctext x='0' y='10' fill='gray'%3E%E2%96%BE%3C/text%3E%3C/svg%3E");;
+				background-repeat: no-repeat;
+		    background-size: 1.3em;
+		    background-position: right center;
+
+			}
+			input#searchQuery {
+				
+			}
+			input#filterButton {
+				color: $primary-color;
+				background-color: #fff;
+			}
+			input#filterButton:hover {
+				border-color: lighten($primary-color, 15%);
+				color: lighten($primary-color, 15%);
+			}
+		}
+
+	}
+}

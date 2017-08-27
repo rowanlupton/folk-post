@@ -1,0 +1,64 @@
+.sans-serif, h1, h2, h3, h4, h5, h6 {
+  font-family: "Pontano Sans", sans-serif; }
+
+.serif, p, li {
+  font-family: "Martel", serif; }
+
+a {
+  color: #07507B;
+  text-decoration: none; }
+
+a:hover {
+  color: #0b7fc3; }
+
+a:visited {
+  color: #008742; }
+
+a:visited:hover {
+  color: #00d467; }
+
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  margin: 0; }
+  body #header {
+    width: 100vw;
+    text-align: center;
+    background-color: #ddd; }
+    body #header a {
+      text-decoration: none;
+      color: #07507B; }
+    body #header a:hover {
+      color: #0b7fc3; }
+    body #header #newSubmissionLinks {
+      text-align: center; }
+      body #header #newSubmissionLinks .spacer {
+        display: inline-block;
+        min-width: 3em; }
+      body #header #newSubmissionLinks a {
+        text-decoration: none; }
+  body .wrapper {
+    flex: 1;
+    font-family: "Martel", serif;
+    width: 80vw;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto; }
+
+footer {
+  min-height: 3em;
+  min-width: 100vw;
+  margin-top: 1em;
+  background-color: #ddd; }
+  footer #footerDiv {
+    font-family: "Martel", serif;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    min-height: 3em; }
+    footer #footerDiv .spacer {
+      width: 10vw; }
+
+/*# sourceMappingURL=style.css.map */
